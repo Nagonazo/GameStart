@@ -1,29 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AR.js Location-based AR</title>
+    <title>AR.js Location Based</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-ar.js@3.3.2/aframe-ar.js"></script>
+    <script src="https://unpkg.com/aframe-ar.js@1.7.2/aframe-ar.js"></script>
   </head>
-
   <body style="margin: 0; overflow: hidden;">
-    <!-- AR Scene -->
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
-      arjs="sourceType: webcam; debugUIEnabled: false; gpsMinAccuracy: 1000;"
+      arjs="sourceType: webcam; debugUIEnabled: false;"
     >
-      <!-- Camera to detect location -->
-      <a-camera gps-camera rotation-reader></a-camera>
-
-      <!-- Text that appears at specific coordinates -->
+      <!-- GPS位置情報によるオブジェクト配置 -->
       <a-text
         value="Game Start"
         gps-entity-place="latitude: 35.158776; longitude: 136.903986;"
         position="0 15 0"  <!-- ここで高度（Y軸）に設定 -->
         scale="10 10 10"
-        look-at="[gps-camera]"
       ></a-text>
+
+      <!-- GPSカメラ -->
+      <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
   </body>
 </html>
