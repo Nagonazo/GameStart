@@ -1,60 +1,29 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>AR Example</title>
+    <title>AR.js Location-based AR</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.js"></script>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
-      
-      #arc-text {
-        font-family: 'Luckiest Guy', cursive;
-        font-size: 4em;
-        position: relative;
-        display: flex;
-        justify-content: center;
-      }
-    </style>
+    <script src="https://unpkg.com/aframe-ar.js@3.3.2/aframe-ar.js"></script>
   </head>
-  
+
   <body style="margin: 0; overflow: hidden;">
+    <!-- AR Scene -->
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false; gpsMinAccuracy: 1000;"
+    >
+      <!-- Camera to detect location -->
+      <a-camera gps-camera rotation-reader></a-camera>
 
-    <!-- AR.js Scene -->
-    <a-scene embedded arjs="debugUIEnabled: false">
-     <a-marker preset="hiro">
-    <a-entity id="arc-text" position="0 1.5 0">
-      <a-text value="GAME START" color="#FF0000" align="center" scale="2 2 2" rotation="0 0 0"></a-text>
-    </a-entity>
-  </a-marker>
-  <a-entity camera></a-entity>
-</a-scene>
-    <script>
-      // ここに半円状にテキストを表示するためのロジックを追加
-      const text = "GAME START";
-      const arcText = document.querySelector("#arc-text");
-      const radius = 1.5; // 半径のサイズをメートル単位で設定
-
-      for (let i = 0; i < text.length; i++) {
-        const charElement = document.createElement('a-text');
-        charElement.setAttribute('value', text[i]);
-        charElement.setAttribute('color', '#FF0000');
-        charElement.setAttribute('scale', '0.5 0.5 0.5');
-        charElement.setAttribute('align', 'center');
-        arcText.appendChild(charElement);
-      }
-
-      const chars = arcText.children;
-      const angleStep = 180 / (text.length - 1); // 半円状に文字を配置するための角度
-
-      for (let i = 0; i < chars.length; i++) {
-        const angle = -90 + i * angleStep;
-        const x = radius * Math.cos(angle * Math.PI / 180);
-        const y = radius * Math.sin(angle * Math.PI / 180);
-        chars[i].setAttribute('position', `${x} ${y} 0`);
-        chars[i].setAttribute('rotation', `0 0 ${angle}`);
-      }
-    </script>
-
+      <!-- Text that appears at specific coordinates -->
+      <a-text
+        value="Game Start"
+        gps-entity-place="latitude: 35.158776; longitude: 136.903986;"
+        position="0 15 0"  <!-- ここで高度（Y軸）を50に設定 -->
+        scale="10 10 10"
+        look-at="[gps-camera]"
+      ></a-text>
+    </a-scene>
   </body>
 </html>
